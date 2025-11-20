@@ -92,6 +92,7 @@ class ArrayTest {
         arr.add(20);
         arr.add(30);
 
+        // Assert
         assertEquals(0, arr.indexOf(10));
         assertEquals(1, arr.indexOf(20));
         assertEquals(2, arr.indexOf(30));
@@ -112,6 +113,7 @@ class ArrayTest {
         arr.removeAt(arr.getCurrentSize() - 1);
         arr.removeAt(arr.getCurrentSize() - 1);
 
+        // Assert
         assertEquals(0, arr.indexOf(10));
         assertEquals(1, arr.indexOf(20));
         assertEquals(-1, arr.indexOf(30));
