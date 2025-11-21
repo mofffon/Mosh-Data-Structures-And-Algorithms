@@ -50,7 +50,7 @@ public class Array {
 
     private void resize(){
         int[] newItems;
-        if(currentSize < items.length / 2){
+        if(currentSize < items.length / 4){
             newItems = new int[items.length / 2];
         }else if(currentSize == items.length){
             newItems = new int[items.length * 2];
