@@ -20,7 +20,7 @@ public class Array {
     public int removeAt(int index){
         int counter = 0;
         int[] newItems = new int[items.length];
-        int item = items[currentSize - 1];
+        int item = items[index];
 
         for(int i = 0 ; i < currentSize; i++){
             if(i == index){
