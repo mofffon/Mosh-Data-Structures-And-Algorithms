@@ -17,6 +17,54 @@ public class Array {
         return currentSize;
     }
 
+    public int max(){
+        if(currentSize == 0){
+            throw new IllegalStateException("There are no items in the Array.");
+        }
+
+        int max = items[0];
+
+        for(int i = 0; i < getCurrentSize(); i++){
+            if(max < items[i]){
+                max = items[i];
+            }
+        }
+
+        return max;
+    }
+
+    public void reverse(){
+
+        for(int i = 0; i < getCurrentSize() / 2; i++){
+            swap(i, getCurrentSize() - 1 - i);
+        }
+    }
+
+    public Array intersect(Array other){
+
+        Array common = new Array(1);
+
+        Array searched;
+        Array targets;
+
+        if(this.getCurrentSize() < other.getCurrentSize()){
+            searched = this;
+            targets = other;
+        }else{
+            searched = other;
+            targets = this;
+        }
+
+        for(int i = 0 ; i < targets.getCurrentSize(); i++){
+            int item = targets.items[i];
+            if(searched.indexOf(item) != -1 && common.indexOf(item) == -1){
+                common.add(item);
+            }
+        }
+
+        return common;
+    }
+
     public int removeAt(int index){
 
         if(index < 0 || index >= getCurrentSize()){
@@ -42,6 +90,29 @@ public class Array {
         return item;
     }
 
+    public void insertAt(int item, int index){
+        if(index < 0 || index > getCurrentSize()){
+            throw new IllegalArgumentException("Index is out of range (0: " + (getCurrentSize() - 1) + ")");
+        }
+
+        if(getCurrentSize() == 0){
+            items[0] = item;
+        }else if(index == getCurrentSize()){
+            items[getCurrentSize()] = item;
+        }else{
+            for(int i = getCurrentSize() - 1; i>=0; i--){
+                items[i + 1] = items[i];
+                if(i == index){
+                    items[i] = item;
+                    break;
+                }
+            }
+        }
+
+        currentSize++;
+        resize();
+    }
+
     public int indexOf(int item){
 
         for(int i = 0; i < currentSize; i++){
@@ -51,6 +122,12 @@ public class Array {
         }
 
         return -1;
+    }
+
+    private void swap(int index1, int index2){
+        int temp = items[index1];
+        items[index1] = items[index2];
+        items[index2] = temp;
     }
 
     private void resize(){
