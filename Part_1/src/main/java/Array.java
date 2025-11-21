@@ -18,6 +18,11 @@ public class Array {
     }
 
     public int removeAt(int index){
+
+        if(index < 0 || index >= getCurrentSize()){
+            throw new  IllegalArgumentException("Index out of range (0: " + (getCurrentSize() -1) +")");
+        }
+
         int counter = 0;
         int[] newItems = new int[items.length];
         int item = items[index];
