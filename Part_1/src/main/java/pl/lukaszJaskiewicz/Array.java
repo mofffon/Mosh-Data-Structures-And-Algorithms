@@ -1,3 +1,5 @@
+package pl.lukaszJaskiewicz;
+
 public class Array {
 
     private int[] items;
@@ -19,7 +21,7 @@ public class Array {
 
     public int max(){
         if(currentSize == 0){
-            throw new IllegalStateException("There are no items in the Array.");
+            throw new IllegalStateException("There are no items in the code.Array.");
         }
 
         int max = items[0];

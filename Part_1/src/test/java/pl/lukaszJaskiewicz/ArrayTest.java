@@ -1,3 +1,5 @@
+package pl.lukaszJaskiewicz;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArrayTest {
