@@ -1,4 +1,4 @@
-package pl.lukaszJaskiewicz;
+package pl.lukaszJaskiewicz.array;
 
 import static org.junit.jupiter.api.Assertions.*;
 

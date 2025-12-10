@@ -1,4 +1,4 @@
-package pl.lukaszJaskiewicz;
+package pl.lukaszJaskiewicz.linkedList;
 
 import java.util.ArrayList;
 import java.util.Arrays;

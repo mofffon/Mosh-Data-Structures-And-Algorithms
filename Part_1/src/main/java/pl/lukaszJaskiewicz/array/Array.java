@@ -1,4 +1,4 @@
-package pl.lukaszJaskiewicz;
+package pl.lukaszJaskiewicz.array;
 
 public class Array {
 
