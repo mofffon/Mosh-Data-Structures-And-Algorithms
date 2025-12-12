@@ -1,57 +1,89 @@
 package pl.lukaszJaskiewicz.queue;
 
-import java.util.LinkedList;
-
 public class LinkedListQueue implements Queue{
 
-    LinkedList<Integer> items = new LinkedList<>();
+    private class Node {
+        int item;
+        Node next;
+
+        public Node(int item){
+            this.item = item;
+        }
+
+        @Override
+        public String toString(){
+            return Integer.toString(item);
+        }
+    }
+
+    private Node first;
+    private Node last;
+    private int count = 0;
 
     public int size() {
-        return items.size();
+        return count;
     }
 
     public boolean isEmpty() {
-        return size() == 0;
+        return count == 0;
     }
 
     public void enqueue(int item) {
-        items.add(item);
+
+        Node newNode = new Node(item);
+
+        if (isEmpty()) {
+            first = last = newNode;
+        }else{
+            last.next = newNode;
+            last = newNode;
+        }
+
+        count++;
     }
 
     public int dequeue() {
+
         if(isEmpty()){
             throw new IllegalStateException("Queue is empty. Can not dequeue.");
         }
 
-        return items.removeFirst();
+        int item;
+
+        if(size() == 1){
+            item = last.item;
+            first = last = null;
+        }else{
+            item = first.item;
+            Node temp = first.next;
+            first.next = null;
+            first = temp;
+        }
+
+        count--;
+        return item;
     }
 
     public int peek() {
+
         if(isEmpty()){
             throw new IllegalStateException("Queue is empty. Can not peek.");
         }
 
-        return items.getFirst();
-    }
-
-    public boolean isFull() {
-        return false;
+        return first.item;
     }
 
     @Override
     public String toString() {
+
         StringBuilder sb = new StringBuilder("[");
+        Node current = first;
 
-        int size = size();
-
-        for(int i = 0; i < size; i++){
-            int item = items.removeFirst();
-            sb.append(item).append((i != (size - 1)? ", ":""));
-            items.add(item);
+        while(current != null){
+            sb.append(current).append(current != last? ", ": "");
+            current = current.next;
         }
 
-        sb.append("]");
-
-        return sb.toString();
+        return sb.append("]").toString();
     }
 }
