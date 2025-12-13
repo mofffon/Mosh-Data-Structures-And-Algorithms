@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class BinarySearchTreeTest {
@@ -98,5 +96,138 @@ class BinarySearchTreeTest {
         }
 
         assertArrayEquals(new Integer[]{1, 6, 4, 8, 10, 9, 7}, tree.postOrderTraversalIterative());
+    }
+
+    @Test
+    void height_whenCalledOnEmptyBinarySearchTree_shouldReturnZero() {
+        assertEquals(-1, tree.height());
+    }
+
+    @Test
+    void height_whenCalled_shouldReturnHeightOfTheBinarySearchTree(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(2, tree.height());
+    }
+
+    @Test
+    void min_whenCalledOnEmptyBinarySearchTre_shouldThrowIllegalStateException(){
+        assertThrows(IllegalStateException.class, () -> tree.min());
+    }
+
+    @Test
+    void min_whenCalled_shouldReturnMinValueOfTheBinarySearchTree() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(1, tree.min());
+    }
+
+    @Test
+    void min2_whenCalledOnEmptyBinarySearchTre_shouldThrowIllegalStateException(){
+        assertThrows(IllegalStateException.class, () -> tree.min2());
+    }
+
+    @Test
+    void min2_whenCalled_shouldReturnMinValueOfBinarySearchTree() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(1, tree.min2());
+    }
+
+    @Test
+    void max_whenCalledOnEmptyTree_shouldThrowIllegalStateException() {
+        assertThrows(IllegalStateException.class, () -> tree.max());
+    }
+
+    @Test
+    void max_whenCalled_shouldReturnMaxValueOfBinarySearchTree(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(10, tree.max());
+    }
+
+    @Test
+    void max2_whenCalledOnEmptyTree_shouldThrowIllegalStateException() {
+        assertThrows(IllegalStateException.class, () -> tree.max2());
+    }
+
+    @Test
+    void max2_whenCalled_shouldReturnMaxValueOfBinarySearchTree(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(10, tree.max2());
+    }
+
+    @Test
+    void equals_whenCalledOnIdenticalTrees_shouldReturnTrue() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        BinarySearchTree other = new BinarySearchTree();
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            other.insert(num);
+        }
+
+        assertTrue(tree.equals(other));
+    }
+
+    @Test
+    void equals_whenCalledOnOneOrBothEmptyTrees_shouldReturnFalse() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertFalse(tree.equals(new BinarySearchTree()));
+        assertFalse(new BinarySearchTree().equals(tree));
+        assertFalse(new BinarySearchTree().equals(new BinarySearchTree()));
+    }
+
+    @Test
+    void equals_whenCalledOnNonIdenticalTrees_shouldReturnFalse() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        BinarySearchTree other = new BinarySearchTree();
+        for(var num: new int[]{7,4,9,1,6,11}){
+            other.insert(num);
+        }
+
+        assertFalse(tree.equals(other));
+    }
+
+    @Test
+    void isValid_whenCalledOnEmptyTree_shouldReturnFalse(){
+        assertFalse(new BinarySearchTree().isValid());
+    }
+
+    @Test
+    void isValid_whenCalledOnProperTree_shouldReturnTrue() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertTrue(tree.isValid());
+    }
+
+    @Test
+    void isValid_whenCalledOnInProperTree_shouldReturnFalse() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        tree.swapLeftSubTreeWithRightSubTreeOnRoot();
+        assertFalse(tree.isValid());
     }
 }
