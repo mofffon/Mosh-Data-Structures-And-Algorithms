@@ -296,7 +296,7 @@ public class BinarySearchTree {
 
     public boolean isValid(){
         if(root == null){
-            return false;
+            return true;
         }
 
         return isValid(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -316,6 +316,142 @@ public class BinarySearchTree {
         Node temp = root.leftChild;
         root.leftChild = root.rightChild;
         root.rightChild = temp;
+    }
+
+    public Integer[] valuesAtDistance(int distance){
+        if(distance < 0){
+            throw new IllegalArgumentException("Distance can not be less than zero. Distance is: " + distance);
+        }
+
+        List<Integer> list = new ArrayList<>();
+
+        valuesAtDistance(root, distance, list);
+
+        return list.toArray(new Integer[0]);
+    }
+
+    private void valuesAtDistance(Node root, int distance, List<Integer> list){
+        if(root == null){
+            return;
+        }
+
+        if(distance == 0){
+            list.add(root.value);
+            return;
+        }
+
+        valuesAtDistance(root.leftChild, distance - 1, list);
+        valuesAtDistance(root.rightChild, distance - 1, list);
+    }
+
+    public String traverseLevelOrder(){
+        StringBuilder sb = new StringBuilder();
+
+        for( int i = 0; i <= height(); i++){
+            Integer[] levelValues = valuesAtDistance(i);
+            sb.append(Arrays.toString(levelValues));
+        }
+
+        return sb.toString();
+    }
+
+    public int size(){
+        if(root == null){
+            return 0;
+        }
+
+        return size(root);
+    }
+
+    private int size(Node root) {
+        if(root == null){
+            return 0;
+        }
+
+        return 1 + size(root.leftChild) + size(root.rightChild);
+    }
+
+    public int countLeaves(){
+        return countLeaves(root);
+    }
+
+    private int countLeaves(Node root){
+        if(root == null){
+            return 0;
+        }
+
+        if(isLeaf(root)){
+            return 1;
+        }
+
+        return countLeaves(root.leftChild) + countLeaves(root.rightChild);
+    }
+
+    private boolean isLeaf(Node root){
+        return root.leftChild == null && root.rightChild == null;
+    }
+
+    public boolean contains(int value) {
+        return contains(value, root);
+    }
+
+    private boolean contains(int value, Node root){
+        if(root == null){
+            return false;
+        }
+
+        return root.value == value || contains(value, root.leftChild) || contains(value, root.rightChild);
+    }
+
+    public boolean areSibling(int val1, int val2){
+        return areSibling(val1, val2, root);
+    }
+
+    private boolean areSibling(int val1, int val2, Node root){
+        if(root == null){
+            return false;
+        }
+
+        if(isLeaf(root)){
+            return false;
+        }
+
+        if((root.leftChild != null && root.rightChild == null) || (root.leftChild == null && root.rightChild != null)){
+            return false;
+        }
+
+        return (root.leftChild.value == val1 && root.rightChild.value == val2)
+                || (root.leftChild.value == val2 && root.rightChild.value == val1)
+                || areSibling(val1, val2, root.leftChild)
+                || areSibling(val1, val2, root.rightChild);
+    }
+
+    public List<Integer> ancestors(int value) {
+        List<Integer> list = new ArrayList<>();
+
+        if(root == null){
+            return list;
+        }
+
+        ancestors(value, root, list);
+        return list;
+    }
+
+    private boolean ancestors(int value, Node root, List<Integer> list){
+        if(root == null){
+            return false;
+        }
+
+        if(root.value == value){
+            return true;
+        }
+
+        if(ancestors(value, root.leftChild, list) || ancestors(value, root.rightChild, list)){
+            list.add(root.value);
+            return true;
+        }
+
+        return false;
     }
 
     @Override

@@ -211,7 +211,7 @@ class BinarySearchTreeTest {
 
     @Test
     void isValid_whenCalledOnEmptyTree_shouldReturnFalse(){
-        assertFalse(new BinarySearchTree().isValid());
+        assertTrue(new BinarySearchTree().isValid());
     }
 
     @Test
@@ -231,5 +231,153 @@ class BinarySearchTreeTest {
 
         tree.swapLeftSubTreeWithRightSubTreeOnRoot();
         assertFalse(tree.isValid());
+    }
+
+    @Test
+    void atKDistance_whenCalledWithNegativeValue_shouldThrowIllegalArgumentException() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertThrows(IllegalArgumentException.class, () -> tree.valuesAtDistance(-1));
+    }
+
+    @Test
+    void atKDistance_whenCalledOnEmptyTree_shouldReturnEmptyArray() {
+        assertArrayEquals(new Integer[]{}, tree.valuesAtDistance(0));
+    }
+
+    @Test
+    void atKDistance_whenCalledOnProperTree_shouldReturnNodesAtKDistanceFromRoot() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertArrayEquals(new Integer[]{7}, tree.valuesAtDistance(0));
+        assertArrayEquals(new Integer[]{4, 9}, tree.valuesAtDistance(1));
+        assertArrayEquals(new Integer[]{1, 6, 8, 10}, tree.valuesAtDistance(2));
+        assertArrayEquals(new Integer[]{}, tree.valuesAtDistance(3));
+    }
+
+    @Test
+    void traverseLevelOrder_whenCalledOnEmptyTree_shouldReturnEmptyString(){
+        assertEquals("", tree.traverseLevelOrder());
+    }
+
+    @Test
+    void traverseLevelOrder_whenCalledOnTreeWithSingleNode_shouldReturnSingleNodeString(){
+        tree.insert(7);
+
+        assertEquals("[7]", tree.traverseLevelOrder());
+    }
+
+    @Test
+    void traverseLevelOrder_whenCalled_shouldReturnStringWithNodeValuesByLevel() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals("[7][4, 9][1, 6, 8, 10]", tree.traverseLevelOrder());
+    }
+
+    @Test
+    void size_whenCalledOnEmptyTree_shouldReturnZero() {
+        assertEquals(0, tree.size());
+    }
+
+    @Test
+    void size_whenCalledOnPopulatedTree_shouldReturnTreeSize(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(7, tree.size());
+    }
+
+    @Test
+    void countLeaves_whenCalledOnEmptyTree_shouldReturnZero() {
+        assertEquals(0, tree.countLeaves());
+    }
+
+    @Test
+    void countLeaves_whenCalledOnTreeWithSingleNode_shouldReturnOne() {
+        tree.insert(7);
+
+        assertEquals(1, tree.countLeaves());
+    }
+
+    @Test
+    void countLeaves_whenCalledOnPopulatedTree_shouldReturnNumberOfLeaves() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertEquals(4, tree.countLeaves());
+    }
+
+    @Test
+    void contains_whenCalledOnEmptyTree_shouldReturnFalse(){
+        assertFalse(tree.contains(4));
+    }
+
+    @Test
+    void contains_whenCalledOnPopulatedTreeWithExistingValue_shouldReturnTrue(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertTrue(tree.contains(7));
+        assertTrue(tree.contains(4));
+        assertTrue(tree.contains(9));
+        assertTrue(tree.contains(1));
+        assertTrue(tree.contains(6));
+        assertTrue(tree.contains(8));
+        assertTrue(tree.contains(10));
+    }
+
+    @Test
+    void contains_whenCalledOnPopulatedTreeWithNonExistingValue_shouldReturnFalse() {
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertFalse(tree.contains(2));
+        assertFalse(tree.contains(11));
+    }
+
+    @Test
+    void isSibling_whenCalledOnEmptyTreeWithRandomValues_shouldReturnFalse() {
+        assertFalse(tree.areSibling(1,2));
+    }
+
+    @Test
+    void isSibling_whenCalledOnPopulatedTreeWithSiblingValues_shouldReturnTrue(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertTrue(tree.areSibling(4,9));
+        assertTrue(tree.areSibling(1,6));
+        assertTrue(tree.areSibling(8,10));
+    }
+
+    @Test
+    void isSibling_whenCalledOnPopulatedTreeWithNonSiblingValues_shouldReturnFalse(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertFalse(tree.areSibling(7,6));
+        assertFalse(tree.areSibling(9,10));
+        assertFalse(tree.areSibling(4,1));
+    }
+
+    @Test
+    void ancestors_whenCalledOnPopulatedTreeWithExistingValue_shouldReturnListWithAncestors(){
+        for(var num: new int[]{7,4,9,1,6,8,10}){
+            tree.insert(num);
+        }
+
+        assertArrayEquals(new Integer[]{4, 7}, tree.ancestors(1).toArray(new Integer[0]));
     }
 }
