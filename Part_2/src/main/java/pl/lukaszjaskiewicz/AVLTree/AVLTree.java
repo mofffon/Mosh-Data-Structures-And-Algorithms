@@ -125,6 +125,38 @@ public class AVLTree {
         preOrderTraversal(root.rightChild, list);
     }
 
+    public boolean isBalanced() {
+        return isBalanced(root);
+    }
+
+    private boolean isBalanced(AVLNode root) {
+        if(root == null){
+            return true;
+        }
+
+        return Math.abs(balanceFactor(root)) < 2 && isBalanced(root.leftChild) && isBalanced(root.rightChild);
+    }
+
+    public int size() {
+        return size(root);
+    }
+
+    private int size(AVLNode root){
+        if(root == null){
+            return 0;
+        }
+
+        if(isLeaf(root)){
+            return 1;
+        }
+
+        return 1 + size(root.leftChild) + size(root.rightChild);
+    }
+
+    public boolean isPerfect(){
+        return size() == (Math.pow(2, root.height + 1) - 1);
+    }
+
     @Override
     public String toString(){
 
