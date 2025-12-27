@@ -65,11 +65,25 @@ class MaxHeapTest {
     void kthLargest_whenCalledOnArray_shouldReturnTheKthLargestItem(){
         int[] values = new int[]{5,3,8,4,1,2};
 
-        for(int value: values){
-            maxHeap.insert(value);
-        }
+        assertEquals(8, MaxHeap.getKthLargest(1, values));
+        assertEquals(5, MaxHeap.getKthLargest(2, values));
+        assertEquals(4, MaxHeap.getKthLargest(3, values));
+        assertEquals(3, MaxHeap.getKthLargest(4, values));
+        assertEquals(2, MaxHeap.getKthLargest(5, values));
+        assertEquals(1, MaxHeap.getKthLargest(6, values));
+    }
 
-        assertEquals(8, maxHeap.remove());
-        assertEquals(5, maxHeap.remove());
+    @Test
+    void isMaxHeap_whenCalledWithHeapifiedArray_shouldReturnTrue(){
+        int[] values = new int[]{8,4,5,3,1,2};
+
+        assertTrue(MaxHeap.isMaxHeap(values));
+    }
+
+    @Test
+    void isMaxHeap_whenCalledWithnonHeapifiedArray_shouldReturnFalse(){
+        int[] values = new int[]{8,4,3,5,1,2};
+
+        assertFalse(MaxHeap.isMaxHeap(values));
     }
 }

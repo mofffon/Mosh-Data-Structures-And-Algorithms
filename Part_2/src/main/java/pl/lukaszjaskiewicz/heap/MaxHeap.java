@@ -3,7 +3,7 @@ package pl.lukaszjaskiewicz.heap;
 public class MaxHeap {
 
     private final int[] items;
-    private int count =0;
+    private int count = 0;
 
     public MaxHeap(){
         items = new int[10];
@@ -26,7 +26,7 @@ public class MaxHeap {
 
         int parentIndex = (index - 1) / 2;
 
-        if(items[parentIndex] < items[index]){
+        if(items[index] > items[parentIndex]){
             swap(parentIndex, index);
             bubbleUp(parentIndex);
         }
@@ -50,11 +50,11 @@ public class MaxHeap {
             return;
         }
 
-        int largerChildIndex = getLargerChildIndex(index, items);
+        int largerIndex = getLargerIndex(index, count, items);
 
-        if(items[largerChildIndex] > items[index]) {
-            swap(largerChildIndex, index);
-            bubbleDown(largerChildIndex);
+        if(index != largerIndex) {
+            swap(largerIndex, index);
+            bubbleDown(largerIndex);
         }
     }
 
@@ -88,20 +88,20 @@ public class MaxHeap {
         int upperBound = items.length / 2 - 1;
 
         for (int i = upperBound; i >= 0; i--) {
-            bubbleDown(i, items);
+            bubbleDown(i, items.length - 1, items);
         }
     }
 
-    private static void bubbleDown(int index, int[] items){
+    private static void bubbleDown(int index, int count, int[] items){
 
-        int largerChildIndex = getLargerChildIndex(index, items);
+        int largerIndex = getLargerIndex(index, count, items);
 
-        while(largerChildIndex != index){
+        while(largerIndex != index){
 
-            swap(index, largerChildIndex, items);
+            swap(index, largerIndex, items);
 
-            index = largerChildIndex;
-            largerChildIndex = getLargerChildIndex(index, items);
+            index = largerIndex;
+            largerIndex = getLargerIndex(index, count, items);
         };
     }
 
@@ -111,31 +111,33 @@ public class MaxHeap {
         items[secondIndex] = temp;
     }
 
-    private static int getLargerChildIndex(int index, int[] items){
+    private static int getLargerIndex(int index, int count, int[] items){
         int leftChildIndex = index * 2 + 1;
         int rightChildIndex = index * 2 + 2;
 
-        Integer leftChildValue = leftChildIndex < items.length? items[leftChildIndex]: null;
-        Integer rightChildValue = rightChildIndex < items.length? items[rightChildIndex]: null;
+        Integer leftChildValue = leftChildIndex <= count? items[leftChildIndex]:null;
+        Integer rightChildValue = rightChildIndex <= count? items[rightChildIndex]: null;
 
-        if(leftChildValue == null && rightChildValue != null){
-            return rightChildIndex;
+        int larger = index;
+
+        if(leftChildValue != null && leftChildValue > items[larger]){
+            larger = leftChildIndex;
         }
 
-        if(leftChildValue != null && rightChildValue == null){
-            return leftChildIndex;
+        if(rightChildValue != null && rightChildValue > items[larger]){
+            larger = rightChildIndex;
         }
 
-        if(leftChildValue == null & rightChildValue == null){
-            return index;
-        }
-
-        return leftChildValue > rightChildValue? leftChildIndex: rightChildIndex;
+        return larger;
     }
 
-    public static int kthLargest(int k, int[] items){
-        if(k <= 0 || k >= items.length){
-            throw new IllegalStateException("The k parameter must be a positive int not larger or equal to array size.");
+    public static int getKthLargest(int k, int[] items){
+        if(items == null || items.length == 0){
+            throw new IllegalArgumentException("Items array must contain at least one item");
+        }
+
+        if(k <= 0 || k > items.length){
+            throw new IllegalStateException("The k parameter must be a positive int not larger to items array size.");
         }
 
         MaxHeap heap = new MaxHeap();
@@ -146,11 +148,31 @@ public class MaxHeap {
 
         Integer item = null;
 
-        for (int i= 0; i < k; i++){
+        int counter = 0;
+        while(counter++ < k){
             item = heap.remove();
         }
 
         return item;
+    }
+
+    public static boolean isMaxHeap(int[] input){
+        if(input.length <= 1){
+            return true;
+        }
+
+        MaxHeap heap = new MaxHeap(6);
+        for(int item: input){
+            heap.insert(item);
+        }
+
+        for(int i = 0; i < heap.items.length; i++){
+            if(input[i] != heap.items[i]){
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
