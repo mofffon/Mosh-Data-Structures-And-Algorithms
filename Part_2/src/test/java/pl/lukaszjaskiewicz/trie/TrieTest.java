@@ -52,6 +52,31 @@ class TrieTest {
     }
 
     @Test
+    void containsRec_whenCalledWithTrieContainingWord_shouldReturnTrue(){
+
+        trie.insert("canada");
+        trie.insert("can");
+        trie.insert("boy");
+
+        assertTrue(trie.containsRec("canada"));
+        assertTrue(trie.containsRec("can"));
+        assertTrue(trie.containsRec("boy"));
+    }
+
+    @Test
+    void containsRec_whenCalledWithTrieNotContainingWord_shouldReturnFalse() {
+
+        trie.insert("canada");
+        trie.insert("can");
+        trie.insert("boy");
+
+        assertFalse(trie.containsRec("cat"));
+        assertFalse(trie.containsRec("canting"));
+        assertFalse(trie.containsRec("bo"));
+        assertFalse(trie.containsRec("boyish"));
+    }
+
+    @Test
     void traverse_whenCalled_ShouldTraverseTheTriePreOrder(){
         trie.insert("canada");
 
@@ -116,5 +141,41 @@ class TrieTest {
 
         list = trie.autoComplete("care");
         assertArrayEquals(new String[]{"care", "careful"}, list.toArray(new String[0]));
+    }
+
+    @Test
+    void countWords_whenCalled_shouldReturnWordCount(){
+        trie.insert("car");
+        trie.insert("card");
+        trie.insert("care");
+        trie.insert("careful");
+        trie.insert("egg");
+
+        System.out.println(trie.countWords());
+    }
+
+    @Test
+    void getLongestPrefix_whenCalled_shouldReturnTheLongestPrefix(){
+        trie.insert("card");
+        trie.insert("care");
+
+        assertEquals("car", trie.getLongestPrefix());
+
+        trie = new Trie();
+        trie.insert("car");
+        trie.insert("care");
+
+        assertEquals("car", trie.getLongestPrefix());
+
+        trie = new Trie();
+        trie.insert("car");
+        trie.insert("dog");
+
+        assertEquals("", trie.getLongestPrefix());
+
+        trie = new Trie();
+        trie.insert("car");
+
+        assertEquals("car", trie.getLongestPrefix());
     }
 }

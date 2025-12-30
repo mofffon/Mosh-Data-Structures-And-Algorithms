@@ -43,6 +43,10 @@ public class Trie {
             return !children.isEmpty();
         }
 
+        public int childrenCount(){
+            return children.size();
+        }
+
         @Override
         public String toString(){
             return "" + value;
@@ -92,6 +96,32 @@ public class Trie {
         }
 
         return current.isEndOfWord;
+    }
+
+    public boolean containsRec(String word){
+        if(word == null){
+            return false;
+        }
+
+        return containsRec(0, word, root);
+    }
+
+    private boolean containsRec(int index, String word, Node root){
+
+        char ch = word.charAt(index);
+
+        if(!root.contains(ch)){
+            return false;
+        }
+
+        Node child = root.getChild(ch);
+
+        if(index == (word.length() - 1)){
+            return child.isEndOfWord;
+        }
+
+        return containsRec(index + 1, word, child);
+
     }
 
     public String traverse(){
@@ -167,5 +197,38 @@ public class Trie {
         for(var child : root.getAllChildren()){
             autoComplete(word + child.value, child, list);
         }
+    }
+
+    public int countWords(){
+        return countWords(root);
+    }
+
+    private int countWords( Node root){
+
+        int count = 0;
+
+        if(root.isEndOfWord){
+            count++;
+        }
+
+        for(var child: root.getAllChildren()){
+            count += countWords(child);
+        }
+
+        return count;
+    }
+
+    public String getLongestPrefix(){
+        StringBuilder sb = new StringBuilder();
+
+        var current = root;
+
+        while(!current.isEndOfWord && current.childrenCount() == 1){
+            char ch = current.getAllChildren()[0].value;
+            sb.append(ch);
+            current = current.getAllChildren()[0];
+        }
+
+        return sb.toString();
     }
 }
