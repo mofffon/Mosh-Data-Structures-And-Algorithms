@@ -165,4 +165,74 @@ public class Graph {
 
         return sb.toString();
     }
+
+    public List<String> topologicalSort(){
+
+        Set<Node> set = new HashSet<>();
+        Stack<Node> stack = new Stack<>();
+
+        for(Node node: nodes.values()){
+            topologicalSort(node, set, stack);
+        }
+
+        List<String> list = new ArrayList<>();
+        while(!stack.empty()){
+            list.add(stack.pop().toString());
+        }
+
+        return list;
+    }
+
+    private void topologicalSort(Node root, Set<Node> visited, Stack<Node> stack){
+        if(visited.contains(root)){
+            return;
+        }
+
+        visited.add(root);
+
+        for(var node: adjacencyList.get(root)){
+            topologicalSort(node, visited, stack);
+        }
+
+        stack.push(root);
+    }
+
+    public boolean hasCycle(){
+        Set<Node> all = new HashSet<>(nodes.values());
+        Set<Node> visiting = new HashSet<>();
+        Set<Node> visited = new HashSet<>();
+
+        while(!all.isEmpty()){
+            Node node = all.iterator().next();
+            if(hasCycle(node,all, visiting, visited)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean hasCycle(Node root, Set<Node> all, Set<Node> visiting, Set<Node> visited){
+
+        all.remove(root);
+        visiting.add(root);
+
+        for(var node: adjacencyList.get(root)){
+            if(!visited.contains(root)){
+
+                if(visiting.contains(node)){
+                    return true;
+                }
+
+                if(hasCycle(node, all, visiting, visited)){
+                    return true;
+                }
+            }
+        }
+
+        visiting.remove(root);
+        visited.add(root);
+
+        return false;
+    }
 }

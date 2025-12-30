@@ -179,4 +179,50 @@ class GraphTest {
         assertEquals("[A, B, C, D]", graph.breadthFirstTraversal("A"));
     }
 
+    @Test
+    void topologicalSort_whenCalled_shouldReturnListOfProperlyVisitedNodeStrings(){
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("X");
+        graph.addNode("P");
+
+        graph.addEdge("X", "A");
+        graph.addEdge("X", "B");
+        graph.addEdge("A", "P");
+        graph.addEdge("B", "P");
+
+        assertEquals("[X, B, A, P]", graph.topologicalSort().toString());
+    }
+
+    @Test
+    void hasCycle_whenCalledOnADirectedAcyclicGraph_shouldReturnFalse(){
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("X");
+        graph.addNode("P");
+
+        graph.addEdge("X", "A");
+        graph.addEdge("X", "B");
+        graph.addEdge("A", "P");
+        graph.addEdge("B", "P");
+
+        assertFalse(graph.hasCycle());
+    }
+
+    @Test
+    void hasCycle_whenCalledOnNonAcyclicDirectedGraph_shouldReturnTrue(){
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("X");
+        graph.addNode("P");
+
+        graph.addEdge("X", "A");
+        graph.addEdge("X", "B");
+        graph.addEdge("A", "P");
+        graph.addEdge("B", "P");
+        graph.addEdge("P", "X");
+
+        assertTrue(graph.hasCycle());
+    }
+
 }
