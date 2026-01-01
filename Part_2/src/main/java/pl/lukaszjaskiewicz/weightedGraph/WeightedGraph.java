@@ -92,6 +92,16 @@ public class WeightedGraph {
         toNode.addEdge(fromNode, weight);
     }
 
+    public boolean contains(String label){
+        for(var key: nodes.keySet()){
+            if(label.equals(key)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public Path getShortestPath(String from, String to){
         Node fromNode = nodes.get(from);
         if (fromNode == null){
@@ -150,6 +160,81 @@ public class WeightedGraph {
         }
 
         return path;
+    }
+
+    public boolean hasCycle(){
+        Set<Node> visited = new HashSet<>();
+
+        for(var node: nodes.values()){
+            if(!visited.contains(node) && hasCycle(node, null, visited)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean hasCycle(Node root, Node parent, Set<Node> visited){
+        visited.add(root);
+
+        for(var edge: root.getEdges()){
+            Node node = edge.to;
+
+            if(node == parent){
+                continue;
+            }
+
+            if(visited.contains(node) || hasCycle(node, root, visited)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public WeightedGraph getMinimumSpanningTree(){
+
+        if(nodes.isEmpty()){
+            return new WeightedGraph();
+        }
+
+        WeightedGraph graph = new WeightedGraph();
+
+        Set<Node> all = new HashSet<>(nodes.values());
+
+        PriorityQueue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(e -> e.weight));
+
+        Node root = nodes.values().iterator().next();
+        queue.addAll(root.getEdges());
+
+        if(queue.isEmpty()){
+            return graph;
+        }
+
+        graph.addNode(root.value);
+        all.remove(root);
+
+        while(!all.isEmpty()){
+
+            Edge edge = queue.remove();
+
+            while(graph.contains(edge.to.value)){
+                edge = queue.remove();
+            }
+
+            var nextNode = edge.to;
+
+            graph.addNode(nextNode.value);
+            graph.addEdge(root.value, nextNode.value, edge.weight);
+
+            all.remove(nextNode);
+            root = nextNode;
+
+            queue.addAll(root.getEdges());
+
+        }
+
+        return graph;
     }
 
     @Override

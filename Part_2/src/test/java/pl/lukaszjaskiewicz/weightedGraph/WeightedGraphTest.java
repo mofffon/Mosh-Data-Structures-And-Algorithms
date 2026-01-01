@@ -53,4 +53,46 @@ class WeightedGraphTest {
 
         assertEquals("[A, B, E]", graph.getShortestPath("A", "E").toString());
     }
+
+    @Test
+    void hasCycle_whenCalledOnUndirectedNonCyclicGraph_shouldReturnFalse() {
+
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+
+        graph.addEdge("A", "B", 2);
+        graph.addEdge("B", "C", 3);
+
+        assertFalse(graph.hasCycle());
+    }
+
+    @Test
+    void hasCycle_whenCalledOnUndirectedCyclicGraph_shouldReturnTrue(){
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+
+        graph.addEdge("A", "B", 2);
+        graph.addEdge("B", "C", 3);
+        graph.addEdge("A", "C", 1);
+
+        assertTrue(graph.hasCycle());
+    }
+
+    @Test
+    void minSpanningTree_whenCalled_shouldReturnMinSpanningTree(){
+        graph.addNode("A");
+        graph.addNode("B");
+        graph.addNode("C");
+        graph.addNode("D");
+
+        graph.addEdge("A", "B", 3);
+        graph.addEdge("A", "C", 1);
+        graph.addEdge("B", "C", 2);
+        graph.addEdge("C", "D", 5);
+        graph.addEdge("D", "B", 4);
+
+        System.out.println(graph.getMinimumSpanningTree());
+    }
 }
