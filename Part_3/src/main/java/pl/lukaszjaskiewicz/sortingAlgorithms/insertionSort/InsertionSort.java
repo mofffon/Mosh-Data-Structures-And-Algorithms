@@ -1,7 +1,5 @@
 package pl.lukaszjaskiewicz.sortingAlgorithms.insertionSort;
 
-import pl.lukaszjaskiewicz.Utils;
-
 public class InsertionSort {
 
     public static void sort(int[] input){
@@ -21,5 +19,4 @@ public class InsertionSort {
             }
         }
     }
-
 }
