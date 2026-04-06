@@ -1,7 +1,5 @@
 package pl.lukaszjaskiewicz.sortingAlgorithms.bubbleSort;
 
-import pl.lukaszjaskiewicz.sortingAlgorithms.bubbleSort.BubbleSort;
-
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;

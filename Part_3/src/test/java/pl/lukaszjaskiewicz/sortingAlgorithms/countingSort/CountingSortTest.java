@@ -1,18 +1,17 @@
-package pl.lukaszjaskiewicz.sortingAlgorithms.mergeSort;
-
-import org.junit.jupiter.api.Test;
-
+package pl.lukaszjaskiewicz.sortingAlgorithms.countingSort;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MergeSortTest {
+public class CountingSortTest {
 
-    @Test
+    @org.junit.jupiter.api.Test
     void sort_whenCalled_shouldSortInputArray() {
         int[] input = {7,3,1,4,6,2,3};
 
-        MergeSort.sort(input);
+        CountingSort.sort(input);
         assertEquals("[1, 2, 3, 3, 4, 6, 7]", Arrays.toString(input));
     }
+
+
 }
